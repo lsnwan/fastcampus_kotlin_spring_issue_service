@@ -54,4 +54,8 @@ class IssueService (
     }
   }
 
+  fun delete(id: Long) {
+    issueRepository.deleteById(id)
+  }
+
 }
