@@ -6,3 +6,7 @@ jwt:
   subject: auth
   expires-time: 3600  # 1시간
   secret : my-secret
+
+logging:
+  level:
+    web: info
