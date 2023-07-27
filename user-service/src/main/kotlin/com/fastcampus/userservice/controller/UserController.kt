@@ -44,7 +44,6 @@ class UserController (
     @AuthToken token: String,
   ) : MeResponse {
     return MeResponse(userService.getByToken(token))
-
   }
 
   @GetMapping("/{userId}/username")
