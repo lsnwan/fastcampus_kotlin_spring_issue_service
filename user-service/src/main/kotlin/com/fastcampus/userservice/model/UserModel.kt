@@ -25,5 +25,9 @@ data class MeResponse (
       )
     }
   }
-
 }
+
+data class UserEditRequest (
+  val username: String,
+
+)
