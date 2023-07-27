@@ -1,5 +1,6 @@
 package com.fastcampus.userservice.controller
 
+import com.fastcampus.userservice.model.SignInResponse
 import com.fastcampus.userservice.model.SignUpRequest
 import com.fastcampus.userservice.service.UserService
 import org.springframework.web.bind.annotation.PostMapping
@@ -16,6 +17,11 @@ class UserController (
   @PostMapping("/signup")
   suspend fun signup(@RequestBody request : SignUpRequest) {
     userService.signUp(request)
+  }
+
+  @PostMapping("/signin")
+  suspend fun signin(@RequestBody signInRequest: SignUpRequest): SignInResponse {
+    return userService.signIn(signInRequest)
   }
 
 }
