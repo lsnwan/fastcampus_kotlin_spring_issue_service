@@ -6,6 +6,7 @@ import com.fastcampus.userservice.domain.repository.UserRepository
 import com.fastcampus.userservice.exception.PasswordNotMatchedException
 import com.fastcampus.userservice.exception.UserExistsException
 import com.fastcampus.userservice.exception.UserNotFoundException
+import com.fastcampus.userservice.model.SignInRequest
 import com.fastcampus.userservice.model.SignInResponse
 import com.fastcampus.userservice.model.SignUpRequest
 import com.fastcampus.userservice.utils.BCryptUtils
@@ -39,7 +40,7 @@ class UserService (
     }
   }
 
-  suspend fun signIn(signInRequest: SignUpRequest): SignInResponse {
+  suspend fun signIn(signInRequest: SignInRequest): SignInResponse {
     return with (userRepository.findByEmail(signInRequest.email) ?: throw UserNotFoundException()) {
       val verified = BCryptUtils.verify(signInRequest.password, password)
       if (!verified) {
@@ -63,6 +64,10 @@ class UserService (
       )
 
     }
+  }
+
+  suspend fun logout(token: String) {
+    cacheManager.awaitEvict(token)
   }
 
 }
