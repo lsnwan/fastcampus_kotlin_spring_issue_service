@@ -12,12 +12,18 @@ import com.fastcampus.userservice.utils.BCryptUtils
 import com.fastcampus.userservice.utils.JWTClaim
 import com.fastcampus.userservice.utils.JWTUtils
 import org.springframework.stereotype.Service
+import java.time.Duration
 
 @Service
 class UserService (
   private val userRepository: UserRepository,
   private val jwtProperties: JWTProperties,
+  private val cacheManager: CoroutineCacheManager<User>,
 ) {
+
+  companion object {
+    private val CACHE_TTL = Duration.ofMillis(1)
+  }
 
   suspend fun signUp(signUpRequest: SignUpRequest) {
     with(signUpRequest) {
@@ -49,6 +55,7 @@ class UserService (
 
       val newToken = JWTUtils.createToken(jwtClaim, jwtProperties)
 
+      cacheManager.awaitPut(key = newToken, value = this, ttl = CACHE_TTL)
       SignInResponse(
         email = email,
         username = username,
